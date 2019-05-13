@@ -6,7 +6,7 @@ import org.json.*;
 
 public class ScriptGen {
 	
-	public int numberofNodes = 10000;
+	public int numberofNodes = 4000;
 	public double radius_km = 7;
 	public double lambda = 4000;
 	public Random slump = new Random();

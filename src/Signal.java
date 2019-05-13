@@ -11,5 +11,7 @@ class Signal{
 	public Proc destination;
 	public double arrivalTime;
 	public int signalType;
+	public Node2 node =null;
 	public Signal next;
+	public Signal prev; 
 }

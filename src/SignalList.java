@@ -10,10 +10,10 @@
 
 public class SignalList{
 	private  static Signal list, last;
-	private static Signal check
 
 	SignalList(){
     	list = new Signal();
+    	list.arrivalTime=0;
     	last = new Signal();
     	list.next = last;
 	}
@@ -30,9 +30,29 @@ public class SignalList{
  		predummy = dummy;
  		dummy = dummy.next;
  	}
+ 	newSignal.prev=predummy;
  	predummy.next = newSignal;
  	newSignal.next = dummy;
- }
+    }
+	
+	public static void SendSignal(int type, Proc dest, double arrtime, Node2 node){
+	 	Signal dummy, predummy;
+	 	Signal newSignal = new Signal();
+	 	newSignal.signalType = type;
+	 	newSignal.destination = dest;
+	 	newSignal.arrivalTime = arrtime;
+	 	newSignal.node = node;
+	 	
+	 	predummy = list;
+	 	dummy = list.next;
+	 	while ((dummy.arrivalTime < newSignal.arrivalTime) & (dummy != last)){
+	 		predummy = dummy;
+	 		dummy = dummy.next;
+	 	}
+	 	newSignal.prev=predummy;
+	 	predummy.next = newSignal;
+	 	newSignal.next = dummy;
+	 }
 
 	public static Signal FetchSignal(){
 		Signal dummy;
@@ -41,4 +61,5 @@ public class SignalList{
 		dummy.next = null;
 		return dummy;
 	}
+	
 }

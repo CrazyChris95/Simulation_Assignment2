@@ -11,10 +11,13 @@ import java.io.*;
 // signal names without dot notation
 public class Node2 extends Proc{
 	public static double lambda;
+	public static double radius;
 	public static Gateway gateway;
 	public double x_pos;
 	public double y_pos;
-	private boolean collided=false;
+	public String Id;
+ 
+	public boolean iscollided=false;
 
 	
 	
@@ -24,9 +27,9 @@ public class Node2 extends Proc{
 	public void TreatSignal(Signal x){
 		switch (x.signalType) {
 			case DEPART:{
-					collided =false;
-					SignalList.SendSignal(ARRIVAL, gateway, time +1);
-					SignalList.SendSignal(DEPART,this, time + Math.log(1-slump.nextDouble())/(-1.0/lambda));;
+					iscollided =false;
+					SignalList.SendSignal(ARRIVAL, gateway, time +1, this);
+					gateway.sent++;
 				}break;
 			} 
 		
@@ -35,7 +38,7 @@ public class Node2 extends Proc{
 	}
 	
 	public void collision() {
-		collided = true;
+		iscollided = true;
 	}
 	
 	}

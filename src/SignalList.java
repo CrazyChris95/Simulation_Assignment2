@@ -58,7 +58,7 @@ public class SignalList{
 		Signal dummy;
 		dummy = list.next;
 		list.next = dummy.next;
-		dummy.next = null;
+		dummy.next = null; 
 		return dummy;
 	}
 	

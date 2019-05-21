@@ -12,6 +12,8 @@ public class Node2 extends Proc {
 	public static double lambda;
 	public static double radius;
 	public static Gateway gateway;
+	public static int lb;
+	public static int ub;
 	public double x_pos;
 	public double y_pos;
 	public String Id;
@@ -45,8 +47,7 @@ public class Node2 extends Proc {
 			while (x.node != null && timestamp - x.arrivalTime < 1) {
 				double dist = sqrt(pow(x.node.x_pos - this.x_pos, 2) + pow(x.node.y_pos - this.y_pos, 2));
 				if (dist <= Node2.radius) {
-					SignalList.SendSignal(DEPART, this, time + 5.0 * (1 - slump.nextDouble()), this);
-					channelsensed = true;
+					SignalList.SendSignal(DEPART, this, time + (ub - (ub-lb)*slump.nextDouble()), this);					channelsensed = true;
 					return;
 				}
 				x = x.prev;

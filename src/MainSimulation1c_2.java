@@ -14,9 +14,9 @@ import org.json.simple.parser.ParseException;
 public class MainSimulation1c_2 extends Global{
 	public static void main(String[] args) throws IOException, JSONException {
 		
-		int [] lb = {0,5,10,25,50,100,175,300,400,600};
-		int [] ub = {5,15,25,55,100,160,250,400,600,1000};
-		SimpleFileWriter file1 = new SimpleFileWriter("/Users/c/Documents/Kurser_Lund/Simulering/Assignment2/1c_ublb.txt", true);
+		double [] lb = {0,0,0,0,0,0,0,0,0,0};
+		double [] ub = {0.01, 0.1, 0.3, .5, 0.7, 0.9, 1.0, 1.5, 2.0, 5.0};
+		SimpleFileWriter file1 = new SimpleFileWriter("/Users/c/Documents/Skola/Simulering/Assignment2/1c_ublb.txt", true);
 
   
 		

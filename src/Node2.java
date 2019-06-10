@@ -1,4 +1,5 @@
 
+
 import java.util.*;
 
 import static java.lang.Math.pow;
@@ -12,8 +13,8 @@ public class Node2 extends Proc {
 	public static double lambda;
 	public static double radius;
 	public static Gateway gateway;
-	public static int lb;
-	public static int ub;
+	public static double lb;
+	public static double ub;
 	public double x_pos;
 	public double y_pos;
 	public String Id;
@@ -26,37 +27,50 @@ public class Node2 extends Proc {
 
 	public void TreatSignal(Signal x) {
 		switch (x.signalType) {
-		case DEPART:
-			sensedchannel(x);
-			break;
+		case DEPART: {
+			iscollided = false;
+			double a =0;
+			if (sensedchannel1(x)) {
+				sent = true;
+				gateway.sent++;
+				SignalList.SendSignal(ARRIVAL, gateway, time + 1, this);
+				a=1;
+			} else {
+				a= ub - (ub - lb) * slump.nextDouble();
+				SignalList.SendSignal(RESEND, this, time + a , this);
+			}
+			double b=0;
+			while( a > b) {
+				b = Math.log(1 - slump.nextDouble()) / (-1.0 / Node2.lambda);
+			}
+			SignalList.SendSignal(DEPART, this, time +b , this);
 		}
+			break;
+		case RESEND: {
+			gateway.sent++;
+			sent = true;
+			SignalList.SendSignal(ARRIVAL, gateway, time + 1, this);
+		}
+			break;
 
+		}
 	}
 
-	private void sensedchannel(Signal x) {
+	private boolean sensedchannel1(Signal x) {
 		iscollided = false;
 		double timestamp = x.arrivalTime;
-		if (channelsensed) {
-			sent = true;
-			SignalList.SendSignal(ARRIVAL, gateway, time + 1, this);
-			gateway.sent++;
-			channelsensed = false;
-			
-		} else {
-			x = x.prev;
-			while (x.node != null && timestamp - x.arrivalTime < 1) {
+		x = x.prev;
+		while (x.node != null && timestamp - x.arrivalTime < 1) {
+			if ((x.signalType == DEPART || RESEND == x.signalType) && x.node.sent) {
 				double dist = sqrt(pow(x.node.x_pos - this.x_pos, 2) + pow(x.node.y_pos - this.y_pos, 2));
 				if (dist <= Node2.radius) {
-					SignalList.SendSignal(DEPART, this, time + (ub - (ub-lb)*slump.nextDouble()), this);					channelsensed = true;
-					return;
+					return false;
 				}
-				x = x.prev;
 			}
-			
-			sent = true;
-			gateway.sent++;
-			SignalList.SendSignal(ARRIVAL, gateway, time + 1, this);
+			x = x.prev;
+
 		}
+		return true;
 
 	}
 
@@ -65,9 +79,5 @@ public class Node2 extends Proc {
 		SignalList.SendSignal(ARRIVAL, gateway, time + 1, this);
 		gateway.sent++;
 	}
-
-
-
-
 
 }

@@ -16,7 +16,7 @@ public class MainSimulation1c_rad extends Global{
 		
 		double [] rad = {6,7,8,9,10,11};
 		
-		SimpleFileWriter file1 = new SimpleFileWriter("/Users/c/Documents/Kurser_Lund/Simulering/Assignment2/1c_ublb.txt", true);
+		SimpleFileWriter file1 = new SimpleFileWriter("/Users/c/Documents/Skola/Simulering/Assignment2/1c_ublb.txt", true);
 
   
 		
@@ -28,7 +28,7 @@ public class MainSimulation1c_rad extends Global{
 			Gateway gateway = new Gateway();
 			int noNodes = 0;
 			Node2.gateway = gateway;
-			Node2.lb = 0;
+			Node2.lb = 1;
 			Node2.ub = 5;
 			
 

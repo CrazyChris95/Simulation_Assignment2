@@ -1,3 +1,5 @@
+
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,13 +14,16 @@ import org.json.simple.parser.ParseException;
 
 public class MainSimulation1c extends Global {
 
-public static void main(String[] args) throws IOException, JSONException {
-		
-		SimpleFileWriter file1 = new SimpleFileWriter("/Users/c/Documents/Kurser_Lund/Simulering/Assignment2/1c_co.txt", true);
-		SimpleFileWriter file2 = new SimpleFileWriter("/Users/c/Documents/Kurser_Lund/Simulering/Assignment2/1c_tp.txt", true);
+	public static void main(String[] args) throws IOException, JSONException {
 
+		SimpleFileWriter file1 = new SimpleFileWriter("/Users/c/Documents/Skola/Simulering/Assignment2/1c_co.txt",
+				true);
+		SimpleFileWriter file2 = new SimpleFileWriter("/Users/c/Documents/Skola/Simulering/Assignment2/1c_tp.txt",
+				true);
+		Node2.lb = 1;
+		Node2.ub = 10;
 		for (int j = 1; j <= 10; j++) {
-			
+
 			// Start reading from script
 			Random slump = new Random();
 			ArrayList<Node2> nodes = new ArrayList<Node2>();
@@ -28,7 +33,7 @@ public static void main(String[] args) throws IOException, JSONException {
 
 			JSONParser jsonParser = new JSONParser();
 
-			try (FileReader reader = new FileReader(j+"_nr.json")) {
+			try (FileReader reader = new FileReader(j + "_nr.json")) {
 				// Read JSON file
 				Object obj = jsonParser.parse(reader);
 				JSONObject f = new JSONObject(obj.toString());
@@ -63,22 +68,24 @@ public static void main(String[] args) throws IOException, JSONException {
 				SignalList.SendSignal(DEPART, nodes.get(i), Math.log(1 - slump.nextDouble()) / (-1.0 / 4000.0),
 						nodes.get(i));
 			}
-
-			int d =0;
-			int nomeausure =0;
-			time =0;
+			double tid = 0;
+			int d = 0;
+			int nomeausure = 0;
+			time = 0;
 			double seconds_simulated = 100000;
 			while (time < 100000) {
 				actSignal = SignalList.FetchSignal();
+				tid = time;
 				time = actSignal.arrivalTime;
 				actSignal.destination.TreatSignal(actSignal);
 				d++;
-				if(time >= 10000 && (d % 1000) == 0 && nomeausure<10) {
+				if (time >= 10000 && (d % 1000) == 0 && nomeausure < 10) {
 					nomeausure++;
-					file1.writeln((Double.toString((double)(gateway.failures)/(gateway.successes+gateway.failures))));
-					file2.writeln(Double.toString((double)gateway.successes/time));
+					file1.writeln(
+							(Double.toString((double) (gateway.failures) / (gateway.successes + gateway.failures))));
+					file2.writeln(Double.toString((double) gateway.successes / time));
 				}
-				
+
 			}
 			System.out.println(nomeausure);
 			System.out.println(gateway.successes);
@@ -86,10 +93,13 @@ public static void main(String[] args) throws IOException, JSONException {
 			System.out.println(gateway.sent);
 			System.out.println(gateway.arrivals);
 			System.out.println("troughput: " + (double) (gateway.successes) / (seconds_simulated));
-			System.out.println("Collision probability: "  + (double)(gateway.failures)/(gateway.successes+gateway.failures));
+			System.out.println(
+					"Collision probability: " + (double) (gateway.failures) / (gateway.successes + gateway.failures));
 			System.out.println("Number of nodes: " + noNodes);
+
 		}
 		file1.close();
 		file2.close();
 	}
+
 }

@@ -25,7 +25,7 @@ public class MainSimulation extends Global {
 			Object obj = jsonParser.parse(reader);
 			JSONObject f = new JSONObject(obj.toString());
 
-			Node2.radius = 8;
+			Node2.radius = 7;
 			Node2.lambda = f.getDouble("lambda");
 			JSONArray arr = f.getJSONArray("Nodes");
 			noNodes = arr.length();

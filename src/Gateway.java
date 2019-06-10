@@ -1,4 +1,5 @@
 
+
 import java.util.concurrent.ThreadLocalRandom;
 
 import static java.lang.Math.*;
@@ -29,8 +30,7 @@ class Gateway extends Proc {
 		double timestamp = x.arrivalTime;
 
 		while (timestamp - x.arrivalTime < 1) {
-			
-			if (x.signalType == DEPART && x.node.sent) {
+			if ((x.signalType == DEPART ||RESEND == x.signalType) && x.node.sent) {
 				
 				if (!x.node.iscollided) {
 					failures++;
@@ -47,7 +47,6 @@ class Gateway extends Proc {
 		if (!node.iscollided) {
 			successes++;
 		}
-		SignalList.SendSignal(DEPART, node, time + Math.log(1 - slump.nextDouble()) / (-1.0 / Node2.lambda), node);
 		arrivals++;
 		node.sent=false;
 	}
@@ -57,8 +56,8 @@ class Gateway extends Proc {
 		double timestamp = x.arrivalTime;
 
 		while (timestamp - x.arrivalTime < 1) {
-
-			if (x.signalType == DEPART) {
+			
+			if (x.signalType == DEPART || RESEND == x.signalType) {
 
 				if (!x.node.iscollided) {
 					failures++;
